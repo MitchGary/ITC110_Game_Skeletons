@@ -1,12 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class Build_A_Baddie : MonoBehaviour
 {
     //Put your own functions here!
     public BadGuyBrain badGuyBrain;
+
+    public GameObject Bullet;
+    public Transform bulletPos;
+
+    private float timer;
 
     private void Start()
     {
@@ -15,15 +21,24 @@ public class Build_A_Baddie : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(this.gameObject.transform.position, badGuyBrain.player.transform.position) <= 2.0f)
+
+        timer += Time.deltaTime;
+        
+        if (timer > 2)
         {
-            Explode();
+
+            timer = 0;
+            shoot();
+        
         }
+
+        void shoot()
+        {
+            Instantiate(Bullet, bulletPos.position, Quaternion.identity);
+           
+        }
+
     }
 
-    public void Explode()
-    {
-        badGuyBrain.player.GetComponent<CharacterBrain>().health--;
-        badGuyBrain.Despawn();
-    }
+    
 }
